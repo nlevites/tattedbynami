@@ -15,6 +15,7 @@ export default defineConfig({
   adapter: vercel({
     edgeMiddleware: false,
     functionPerRoute: false,
+    maxDuration: 10,
   }),
   vite: {
     optimizeDeps: {
