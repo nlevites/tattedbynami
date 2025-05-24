@@ -1,0 +1,53 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --charcoal: 17 18 20;
+    --ink: 229 229 229;
+    --accent-pink: 255 195 217;
+    --accent-sky: 125 211 252;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-charcoal text-ink font-body antialiased;
+  }
+
+  /* Custom font face for Stellar (fallback to Bebas Neue) */
+  .font-title {
+    font-family: 'Bebas Neue', 'Pretendard', sans-serif;
+    letter-spacing: 0.02em;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto max-w-7xl px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-accent-pink px-4 py-2 text-sm font-medium text-charcoal transition-all hover:bg-accent-pink/90 focus:outline-none focus:ring-2 focus:ring-accent-pink focus:ring-offset-2 focus:ring-offset-charcoal;
+  }
+
+  .input {
+    @apply block w-full rounded-lg border border-ink/20 bg-charcoal px-3 py-2 text-ink placeholder:text-ink/50 focus:border-accent-pink focus:outline-none focus:ring-2 focus:ring-accent-pink focus:ring-offset-2 focus:ring-offset-charcoal;
+  }
+}
+
+@layer utilities {
+  .animation-reduce-motion {
+    @apply motion-reduce:transition-none motion-reduce:animate-none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+} 

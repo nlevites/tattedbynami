@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BookingForm from '@/components/BookingForm';
+import type { Language } from '@/types';
+import { t } from '@/utils/translations';
+
+// Get language from query param
+const lang = (Astro.url.searchParams.get('lang') || 'en') as Language;
+---
+
+<BaseLayout lang={lang} title={`${t('booking.title', lang)} | 나미 타투`}>
+  <section class="container py-16 max-w-4xl">
+    <h1 class="text-4xl font-title text-center mb-12">
+      {t('booking.title', lang)}
+    </h1>
+    
+    {/* Pastel accent sprinkle */}
+    <div class="relative">
+      <div class="absolute -top-10 right-1/4 w-36 h-36 rounded-full bg-accent-pink blur-3xl opacity-20 pointer-events-none"></div>
+      
+      <div class="bg-charcoal/50 rounded-card p-8">
+        <BookingForm lang={lang} client:load />
+      </div>
+    </div>
+  </section>
+</BaseLayout> 

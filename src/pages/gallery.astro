@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import GalleryComponent from '@/components/Gallery';
+import { galleryItems } from '@/utils/gallery-data';
+import type { Language } from '@/types';
+import { t } from '@/utils/translations';
+
+// Get language from query param
+const lang = (Astro.url.searchParams.get('lang') || 'en') as Language;
+---
+
+<BaseLayout lang={lang} title={`${t('gallery.title', lang)} | 나미 타투`}>
+  <section class="container py-16">
+    <h1 class="text-4xl font-title text-center mb-12">
+      {t('gallery.title', lang)}
+    </h1>
+    
+    {/* Pastel accent sprinkles */}
+    <div class="relative">
+      <div class="absolute -top-20 left-1/4 w-36 h-36 rounded-full bg-accent-pink blur-3xl opacity-20 pointer-events-none"></div>
+      <div class="absolute bottom-20 right-1/3 w-36 h-36 rounded-full bg-accent-sky blur-3xl opacity-20 pointer-events-none"></div>
+      
+      <GalleryComponent items={galleryItems} lang={lang} client:load />
+    </div>
+  </section>
+</BaseLayout> 

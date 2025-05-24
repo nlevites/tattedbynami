@@ -1,0 +1,70 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import type { Language } from '@/types';
+import { t } from '@/utils/translations';
+
+// Get language from query param
+const lang = (Astro.url.searchParams.get('lang') || 'en') as Language;
+---
+
+<BaseLayout lang={lang} title={`${t('about.title', lang)} | 나미 타투`}>
+  <section class="container py-16 max-w-4xl">
+    <h1 class="text-4xl font-title text-center mb-12">
+      {t('about.title', lang)}
+    </h1>
+    
+    <div class="prose prose-invert mx-auto">
+      <div class="bg-charcoal/50 rounded-card p-8 mb-12">
+        <p class="whitespace-pre-line text-ink/90 leading-relaxed">
+          {t('about.bio', lang)}
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-charcoal/50 rounded-tile p-6">
+          <h3 class="text-xl font-title mb-4 text-accent-pink">
+            {t('about.studio', lang)}
+          </h3>
+          <p class="text-ink/90">
+            {t('about.address', lang)}
+          </p>
+          
+          <div class="mt-4">
+            <h4 class="font-medium mb-2">{t('about.contact', lang)}</h4>
+            <p class="text-accent-pink">@tattedbynami</p>
+          </div>
+        </div>
+        
+        <div class="bg-charcoal/50 rounded-tile p-6">
+          <h3 class="text-xl font-title mb-4 text-accent-pink">
+            Instagram
+          </h3>
+          <a 
+            href="https://instagram.com/tattedbynami" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-ink hover:text-accent-pink transition-colors"
+          >
+            @tattedbynami
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      {/* Google Maps Embed */}
+      <div class="mt-12 rounded-card overflow-hidden h-96">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11169.5!2d-122.653942!3d45.535389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zRXVwaG9yaWEgVGF0dG9vLCBMbG95ZCwgUG9ydGxhbmQsIE9yZWdvbg!5e0!3m2!1sen!2sus!4v1647859825687!5m2!1sen!2sus"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+</BaseLayout> 

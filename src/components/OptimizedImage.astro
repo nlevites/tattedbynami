@@ -1,0 +1,35 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+  style?: Record<string, string>;
+}
+
+const { 
+  src, 
+  alt, 
+  width = 800, 
+  height = 1067, 
+  loading = 'lazy',
+  class: className,
+  style
+} = Astro.props;
+---
+
+<!-- For dynamic images from public folder, we'll use regular img tag -->
+<!-- In production, you'd import images for full optimization -->
+
+<img
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  class={className}
+  style={style}
+  decoding="async"
+/> 

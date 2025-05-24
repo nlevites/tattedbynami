@@ -1,0 +1,103 @@
+---
+import '@/styles/global.css';
+import type { Language } from '@/types';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  lang?: Language;
+  ogImage?: string;
+}
+
+const {
+  title = 'Tattoos by Nami | 나미 타투',
+  description = 'Delicate linework with playful pastel accents | 섬세한 라인워크와 파스텔 색감의 조화',
+  lang = 'en',
+  ogImage = '/og-default.svg',
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Nami" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    
+    <link rel="canonical" href={Astro.url.href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav class="sticky top-0 z-50 bg-charcoal/95 backdrop-blur-sm border-b border-ink/10">
+      <div class="container flex items-center justify-between h-16">
+        <a href="/" class="font-title text-2xl text-accent-pink">NAMI</a>
+        
+        <div class="flex items-center gap-6">
+          <a href="/" class={`hover:text-accent-pink transition-colors ${currentPath === '/' ? 'text-accent-pink' : ''}`}>
+            {lang === 'ko' ? '홈' : 'Home'}
+          </a>
+          <a href="/gallery" class={`hover:text-accent-pink transition-colors ${currentPath === '/gallery' ? 'text-accent-pink' : ''}`}>
+            {lang === 'ko' ? '갤러리' : 'Gallery'}
+          </a>
+          <a href="/about" class={`hover:text-accent-pink transition-colors ${currentPath === '/about' ? 'text-accent-pink' : ''}`}>
+            {lang === 'ko' ? '소개' : 'About'}
+          </a>
+          <a href="/book" class={`hover:text-accent-pink transition-colors ${currentPath === '/book' ? 'text-accent-pink' : ''}`}>
+            {lang === 'ko' ? '예약' : 'Book'}
+          </a>
+          
+          <div class="h-4 w-px bg-ink/20"></div>
+          
+          <div class="flex gap-2">
+            <a 
+              href={`${currentPath}?lang=en`} 
+              class={`text-sm hover:text-accent-pink transition-colors ${lang === 'en' ? 'text-accent-pink font-medium' : ''}`}
+            >
+              EN
+            </a>
+            <span class="text-ink/50">|</span>
+            <a 
+              href={`${currentPath}?lang=ko`} 
+              class={`text-sm hover:text-accent-pink transition-colors ${lang === 'ko' ? 'text-accent-pink font-medium' : ''}`}
+            >
+              KR
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <main>
+      <slot />
+    </main>
+    
+    <footer class="mt-24 py-12 border-t border-ink/10">
+      <div class="container text-center text-sm text-ink/60">
+        <p>© 2024 Nami. All rights reserved.</p>
+        <p class="mt-2">
+          <a href="https://instagram.com/tattedbynami" target="_blank" rel="noopener noreferrer" class="hover:text-accent-pink transition-colors">
+            @tattedbynami
+          </a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html> 
