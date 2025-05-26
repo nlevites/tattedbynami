@@ -17,6 +17,10 @@ const {
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
+// Helper function to create URLs with language parameter
+const createLangUrl = (path: string) => {
+  return lang === 'ko' ? `${path}?lang=ko` : path;
+};
 ---
 
 <!doctype html>
@@ -48,19 +52,19 @@ const currentPath = Astro.url.pathname;
   <body>
     <nav class="sticky top-0 z-50 bg-charcoal/95 backdrop-blur-sm border-b border-ink/10">
       <div class="container flex items-center justify-between h-16">
-        <a href="/" class="font-title text-2xl text-accent-pink">NAMI</a>
+        <a href={createLangUrl('/')} class="font-title text-2xl text-accent-pink">NAMI</a>
         
         <div class="flex items-center gap-6">
-          <a href="/" class={`hover:text-accent-pink transition-colors ${currentPath === '/' ? 'text-accent-pink' : ''}`}>
+          <a href={createLangUrl('/')} class={`hover:text-accent-pink transition-colors ${currentPath === '/' ? 'text-accent-pink' : ''}`}>
             {lang === 'ko' ? '홈' : 'Home'}
           </a>
-          <a href="/gallery" class={`hover:text-accent-pink transition-colors ${currentPath === '/gallery' ? 'text-accent-pink' : ''}`}>
+          <a href={createLangUrl('/gallery')} class={`hover:text-accent-pink transition-colors ${currentPath === '/gallery' ? 'text-accent-pink' : ''}`}>
             {lang === 'ko' ? '갤러리' : 'Gallery'}
           </a>
-          <a href="/about" class={`hover:text-accent-pink transition-colors ${currentPath === '/about' ? 'text-accent-pink' : ''}`}>
+          <a href={createLangUrl('/about')} class={`hover:text-accent-pink transition-colors ${currentPath === '/about' ? 'text-accent-pink' : ''}`}>
             {lang === 'ko' ? '소개' : 'About'}
           </a>
-          <a href="/book" class={`hover:text-accent-pink transition-colors ${currentPath === '/book' ? 'text-accent-pink' : ''}`}>
+          <a href={createLangUrl('/book')} class={`hover:text-accent-pink transition-colors ${currentPath === '/book' ? 'text-accent-pink' : ''}`}>
             {lang === 'ko' ? '예약' : 'Book'}
           </a>
           

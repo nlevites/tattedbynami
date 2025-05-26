@@ -12,7 +12,7 @@ export interface GalleryItem {
     ko: string;
     en: string;
   };
-  type: 'fine-line' | 'colour' | 'lettering' | 'drawing';
+  type: 'fine-line' | 'colour' | 'lettering' | 'drawing' | 'other';
   dominant: string;
 }
 

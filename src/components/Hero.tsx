@@ -10,6 +10,11 @@ export default function Hero({ lang }: HeroProps) {
   const shouldReduceMotion = typeof window !== 'undefined' && 
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Helper function to create URLs with language parameter
+  const createLangUrl = (path: string) => {
+    return lang === 'ko' ? `${path}?lang=ko` : path;
+  };
+
   return (
     <section className="relative overflow-hidden">
       {/* Pastel accent sprinkles */}
@@ -39,7 +44,7 @@ export default function Hero({ lang }: HeroProps) {
                 {t('hero.subtitle', lang)}
               </p>
               <div className="mt-8">
-                <a href="/gallery" className="btn-primary">
+                <a href={createLangUrl('/gallery')} className="btn-primary">
                   {t('nav.gallery', lang)} →
                 </a>
               </div>

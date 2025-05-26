@@ -9,14 +9,19 @@ import { t } from '@/utils/translations';
 // Get language from query param
 const lang = (Astro.url.searchParams.get('lang') || 'en') as Language;
 
+// Helper function to create URLs with language parameter
+const createLangUrl = (path: string) => {
+  return lang === 'ko' ? `${path}?lang=ko` : path;
+};
+
 // Get featured items - show 6 of the best pieces
 const featuredItems = [
   galleryItems[0],  // dainty_fineline_flowers
   galleryItems[1],  // swan
   galleryItems[2],  // lotus
   galleryItems[5],  // jellyfish_wrist
-  galleryItems[9],  // flaming_heart
-  galleryItems[10], // flying_dolphin
+  galleryItems[13], // skater_boy
+  galleryItems[9],  // flying_dolphin
 ];
 ---
 
@@ -49,7 +54,7 @@ const featuredItems = [
     </div>
     
     <div class="text-center mt-16">
-      <a href="/gallery" class="btn-primary text-lg px-8 py-3">
+      <a href={createLangUrl('/gallery')} class="btn-primary text-lg px-8 py-3">
         {t('home.viewAll', lang)} →
       </a>
     </div>
@@ -66,7 +71,7 @@ const featuredItems = [
           ? '상담을 통해 당신만의 특별한 타투를 디자인해드립니다.'
           : 'Book a consultation to design your unique piece of art.'}
       </p>
-      <a href="/book" class="btn-primary">
+      <a href={createLangUrl('/book')} class="btn-primary">
         {t('nav.book', lang)} {lang === 'ko' ? '예약하기' : 'Appointment'}
       </a>
     </div>
