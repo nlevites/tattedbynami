@@ -8,7 +8,7 @@ interface GalleryFilterProps {
   onFilterChange: (filter: string) => void;
 }
 
-const filters = ['all', 'fine-line', 'colour', 'lettering'] as const;
+const filters = ['all', 'fine-line', 'colour', 'lettering', 'drawing'] as const;
 
 export default function GalleryFilter({ lang, onFilterChange }: GalleryFilterProps) {
   const [activeFilter, setActiveFilter] = useState<string>('all');

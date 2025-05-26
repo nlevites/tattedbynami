@@ -23,6 +23,7 @@ export const translations = {
       'fine-line': { ko: '파인라인', en: 'Fine line' },
       colour: { ko: '컬러', en: 'Colour' },
       lettering: { ko: '레터링', en: 'Lettering' },
+      drawing: { ko: '드로잉', en: 'Drawings' },
     },
   },
   about: {

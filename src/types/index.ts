@@ -8,9 +8,12 @@ export interface Translation {
 export interface GalleryItem {
   id: string;
   src: string;
-  alt: Translation;
-  type: 'fine-line' | 'colour' | 'lettering';
-  dominant?: string;
+  alt: {
+    ko: string;
+    en: string;
+  };
+  type: 'fine-line' | 'colour' | 'lettering' | 'drawing';
+  dominant: string;
 }
 
 export interface BookingFormData {
