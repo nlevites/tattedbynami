@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import type { Language } from '@/types';
 import { t } from '@/utils/translations';
 
@@ -9,13 +9,26 @@ interface HeroProps {
 
 export default function Hero({ lang }: HeroProps) {
   const ref = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"]
   });
   
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  // Disable parallax on mobile for better performance
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? ['0%', '0%'] : ['0%', '50%']);
+  const opacity = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1] : [1, 0]);
   
   const shouldReduceMotion = typeof window !== 'undefined' && 
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -52,10 +65,10 @@ export default function Hero({ lang }: HeroProps) {
 
   return (
     <section ref={ref} className="relative overflow-hidden">
-      {/* Animated Pastel accent sprinkles */}
+      {/* Animated Pastel accent sprinkles - disable on mobile */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
-          animate={{ 
+          animate={isMobile ? {} : { 
             x: [0, 30, 0],
             y: [0, -30, 0],
           }}
@@ -65,9 +78,10 @@ export default function Hero({ lang }: HeroProps) {
             ease: "linear"
           }}
           className="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-accent-pink blur-3xl opacity-30"
+          style={{ willChange: isMobile ? 'auto' : 'transform' }}
         />
         <motion.div 
-          animate={{ 
+          animate={isMobile ? {} : { 
             x: [0, -30, 0],
             y: [0, 30, 0],
           }}
@@ -77,10 +91,14 @@ export default function Hero({ lang }: HeroProps) {
             ease: "linear"
           }}
           className="absolute bottom-12 -left-12 w-36 h-36 rounded-full bg-accent-sky blur-3xl opacity-30"
+          style={{ willChange: isMobile ? 'auto' : 'transform' }}
         />
       </div>
 
-      <motion.div style={{ y, opacity }} className="container py-16 lg:py-24">
+      <motion.div 
+        style={{ y, opacity }} 
+        className="container py-16 lg:py-24"
+      >
         <motion.div
           initial={shouldReduceMotion ? {} : { opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -90,6 +108,7 @@ export default function Hero({ lang }: HeroProps) {
             bounce: 0.3
           }}
           className="relative rounded-card overflow-hidden bg-gradient-to-br from-charcoal to-charcoal/90 shadow-2xl"
+          style={{ willChange: 'transform' }}
         >
           <div className="grid md:grid-cols-2 items-center">
             <motion.div 
@@ -105,7 +124,7 @@ export default function Hero({ lang }: HeroProps) {
                 {t('hero.title', lang)}{' '}
                 <motion.span 
                   className="text-accent-pink inline-block"
-                  animate={{ 
+                  animate={isMobile ? {} : { 
                     textShadow: [
                       "0 0 0px rgba(255, 195, 217, 0)",
                       "0 0 20px rgba(255, 195, 217, 0.5)",
@@ -156,7 +175,7 @@ export default function Hero({ lang }: HeroProps) {
             >
               <motion.div
                 className="absolute inset-0"
-                whileHover={{ scale: 1.05 }}
+                whileHover={isMobile ? {} : { scale: 1.05 }}
                 transition={{ duration: 0.3 }}
               >
                 <picture className="w-full h-full">
@@ -166,6 +185,7 @@ export default function Hero({ lang }: HeroProps) {
                     alt={lang === 'ko' ? '섬세한 꽃 파인라인' : 'Dainty fine-line flowers'}
                     className="w-full h-full object-cover"
                     loading="eager"
+                    style={{ willChange: 'auto' }}
                   />
                 </picture>
               </motion.div>

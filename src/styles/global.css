@@ -15,10 +15,27 @@
 
   html {
     @apply scroll-smooth;
+    /* Improve scroll performance on mobile */
+    -webkit-overflow-scrolling: touch;
   }
 
   body {
     @apply bg-charcoal text-ink font-body antialiased;
+    /* Prevent overscroll bounce on iOS */
+    overscroll-behavior: none;
+  }
+  
+  /* Optimize performance for mobile */
+  @media (max-width: 768px) {
+    * {
+      /* Disable expensive effects on mobile during scroll */
+      scroll-behavior: smooth;
+    }
+    
+    /* Reduce motion for better performance */
+    .blur-3xl {
+      filter: blur(24px);
+    }
   }
 
   /* Custom font face for Stellar (fallback to Bebas Neue) */
