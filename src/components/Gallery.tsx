@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
 import type { Language, GalleryItem as GalleryItemType } from '@/types';
 import GalleryFilter from './GalleryFilter';
 import GalleryItem from './GalleryItem';
@@ -13,17 +13,31 @@ export default function Gallery({ items, lang }: GalleryProps) {
   const [filteredItems, setFilteredItems] = useState(items);
   const [activeFilter, setActiveFilter] = useState('all');
   const [isFiltering, setIsFiltering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [desktopItemsShown, setDesktopItemsShown] = useState(12); // Initial items on desktop
   
   // Mobile swipe detection
   const x = useMotionValue(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = typeof window !== 'undefined' && window.innerWidth < 768 ? 4 : 9;
+  const itemsPerPage = 6; // Fixed number for mobile
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
   
-  const currentItems = filteredItems.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  // Get items to display based on device
+  const displayItems = isMobile 
+    ? filteredItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+    : filteredItems.slice(0, desktopItemsShown);
+    
+  const hasMoreItems = !isMobile && desktopItemsShown < filteredItems.length;
 
   useEffect(() => {
     setIsFiltering(true);
@@ -35,6 +49,7 @@ export default function Gallery({ items, lang }: GalleryProps) {
       }
       setIsFiltering(false);
       setCurrentPage(0); // Reset to first page on filter change
+      setDesktopItemsShown(12); // Reset desktop items shown
     }, 300);
 
     return () => clearTimeout(timer);
@@ -80,6 +95,10 @@ export default function Gallery({ items, lang }: GalleryProps) {
       setCurrentPage(currentPage + 1);
     }
   };
+  
+  const loadMore = () => {
+    setDesktopItemsShown(prev => Math.min(prev + 12, filteredItems.length));
+  };
 
   return (
     <div>
@@ -88,12 +107,12 @@ export default function Gallery({ items, lang }: GalleryProps) {
       <AnimatePresence mode="wait">
         {!isFiltering && (
           <motion.div
-            drag="x"
+            drag={isMobile ? "x" : false}
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
             onDragEnd={handleDragEnd}
-            style={{ x }}
-            className="touch-pan-y"
+            style={{ x: isMobile ? x : 0 }}
+            className={isMobile ? "touch-pan-y" : ""}
           >
             <motion.div 
               className="grid grid-cols-2 md:grid-cols-3 gap-6"
@@ -101,9 +120,9 @@ export default function Gallery({ items, lang }: GalleryProps) {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              key={`${activeFilter}-${currentPage}`}
+              key={`${activeFilter}-${currentPage}-${desktopItemsShown}`}
             >
-              {currentItems.map((item, index) => (
+              {displayItems.map((item, index) => (
                 <motion.div
                   key={item.id}
                   variants={itemVariants}
@@ -118,9 +137,29 @@ export default function Gallery({ items, lang }: GalleryProps) {
         )}
       </AnimatePresence>
       
-      {/* Pagination dots for mobile */}
-      {totalPages > 1 && (
-        <div className="flex justify-center mt-8 gap-2 md:hidden">
+      {/* Load More button for desktop */}
+      {hasMoreItems && (
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <button
+            onClick={loadMore}
+            className="btn-primary px-8 py-3 text-lg hover:shadow-lg transition-all duration-300 hover:scale-105"
+          >
+            {lang === 'ko' ? '더 보기' : 'Load More'} 
+            <span className="ml-2 text-sm opacity-70">
+              ({desktopItemsShown}/{filteredItems.length})
+            </span>
+          </button>
+        </motion.div>
+      )}
+      
+      {/* Pagination dots for mobile only */}
+      {isMobile && totalPages > 1 && (
+        <div className="flex justify-center mt-8 gap-2">
           {Array.from({ length: totalPages }).map((_, index) => (
             <button
               key={index}
@@ -134,6 +173,18 @@ export default function Gallery({ items, lang }: GalleryProps) {
             />
           ))}
         </div>
+      )}
+      
+      {/* Swipe hint for mobile */}
+      {isMobile && totalPages > 1 && (
+        <motion.p 
+          className="text-center text-sm text-ink/50 mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          {lang === 'ko' ? '← 스와이프하여 더 보기 →' : '← Swipe to see more →'}
+        </motion.p>
       )}
     </div>
   );
