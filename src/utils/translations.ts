@@ -6,6 +6,7 @@ export const translations = {
     gallery: { ko: '갤러리', en: 'Gallery' },
     about: { ko: '소개', en: 'About' },
     book: { ko: '예약', en: 'Book' },
+    faq: { ko: 'FAQ', en: 'FAQ' },
   },
   hero: {
     title: { ko: '타투이스트', en: 'Tattoos by' },
@@ -62,6 +63,9 @@ I work at Euphoria Tattoo in Lloyd, Portland, Oregon, in a comfortable and cozy 
       success: { ko: '예약 신청이 완료되었습니다!', en: 'Booking request submitted!' },
       error: { ko: '오류가 발생했습니다. 다시 시도해주세요.', en: 'An error occurred. Please try again.' },
     },
+  },
+  faq: {
+    title: { ko: '자주 묻는 질문', en: 'Frequently Asked Questions' },
   },
 };
 

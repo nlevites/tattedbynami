@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import type { Language, GalleryItem as GalleryItemType } from '@/types';
 import { getTranslation } from '@/utils/translations';
+import OptimizedImage from './OptimizedImage';
 
 interface GalleryItemProps {
   item: GalleryItemType;
@@ -10,30 +11,45 @@ interface GalleryItemProps {
 
 export default function GalleryItem({ item, lang }: GalleryItemProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isTapped, setIsTapped] = useState(false);
+
+  // Handle touch interactions for mobile
+  const handleTouchStart = () => {
+    setIsTapped(true);
+    // Auto-hide after 3 seconds
+    setTimeout(() => setIsTapped(false), 3000);
+  };
+
+  const showOverlay = isHovered || isTapped;
 
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
       className="relative rounded-tile overflow-hidden bg-charcoal shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
       data-type={item.type}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={handleTouchStart}
     >
       <div className="aspect-[3/4] relative">
-        <motion.img
-          src={item.src}
-          alt={getTranslation(item.alt, lang)}
-          className="absolute inset-0 w-full h-full object-cover"
-          loading="lazy"
-          style={{ backgroundColor: item.dominant || '#111214' }}
-          animate={{ scale: isHovered ? 1.1 : 1 }}
+        <motion.div
+          className="absolute inset-0"
+          animate={{ scale: showOverlay ? 1.1 : 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-        />
+        >
+          <OptimizedImage
+            src={item.src}
+            alt={getTranslation(item.alt, lang)}
+            className="w-full h-full"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+        </motion.div>
         
         {/* Gradient overlay */}
         <AnimatePresence>
-          {isHovered && (
+          {showOverlay && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -46,7 +62,7 @@ export default function GalleryItem({ item, lang }: GalleryItemProps) {
 
         {/* Content overlay */}
         <AnimatePresence>
-          {isHovered && (
+          {showOverlay && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

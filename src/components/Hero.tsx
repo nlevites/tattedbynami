@@ -154,14 +154,21 @@ export default function Hero({ lang }: HeroProps) {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
             >
-              <motion.img
-                src="/images/dainty_fineline_flowers.png"
-                alt={lang === 'ko' ? '섬세한 꽃 파인라인' : 'Dainty fine-line flowers'}
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="eager"
+              <motion.div
+                className="absolute inset-0"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
-              />
+              >
+                <picture className="w-full h-full">
+                  <source srcSet="/images/dainty_fineline_flowers.webp" type="image/webp" />
+                  <img
+                    src="/images/dainty_fineline_flowers.png"
+                    alt={lang === 'ko' ? '섬세한 꽃 파인라인' : 'Dainty fine-line flowers'}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                </picture>
+              </motion.div>
               <div className="absolute inset-0 bg-gradient-to-l from-transparent to-charcoal/30"></div>
             </motion.div>
           </div>

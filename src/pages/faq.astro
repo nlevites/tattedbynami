@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FAQSection from '@/components/FAQSection';
+import type { Language } from '@/types';
+import { t } from '@/utils/translations';
+
+// Get language from query param
+const lang = (Astro.url.searchParams.get('lang') || 'en') as Language;
+---
+
+<BaseLayout lang={lang} title={`${t('faq.title', lang)} | 나미 타투`}>
+  <section class="container py-16 max-w-4xl">
+    <h1 class="text-4xl font-title text-center mb-4">
+      {t('faq.title', lang)}
+    </h1>
+    <p class="text-center text-ink/80 mb-12">
+      {lang === 'ko' 
+        ? '타투에 대해 자주 묻는 질문들을 모았습니다.'
+        : 'Common questions about getting a tattoo'}
+    </p>
+    
+    {/* Pastel accent sprinkles */}
+    <div class="relative">
+      <div class="absolute -top-20 left-1/4 w-36 h-36 rounded-full bg-accent-pink blur-3xl opacity-20 pointer-events-none"></div>
+      <div class="absolute bottom-20 right-1/3 w-36 h-36 rounded-full bg-accent-sky blur-3xl opacity-20 pointer-events-none"></div>
+      
+      <FAQSection lang={lang} client:load />
+    </div>
+  </section>
+</BaseLayout> 

@@ -69,6 +69,9 @@ const createLangUrl = (path: string) => {
           <a href={createLangUrl('/book')} class={`text-xs xs:text-sm sm:text-base hover:text-accent-pink transition-colors ${currentPath === '/book' ? 'text-accent-pink' : ''}`}>
             {lang === 'ko' ? '예약' : 'Book'}
           </a>
+          <a href={createLangUrl('/faq')} class={`text-xs xs:text-sm sm:text-base hover:text-accent-pink transition-colors ${currentPath === '/faq' ? 'text-accent-pink' : ''}`}>
+            {lang === 'ko' ? 'FAQ' : 'FAQ'}
+          </a>
           
           <div class="hidden sm:block h-4 w-px bg-ink/20"></div>
           
