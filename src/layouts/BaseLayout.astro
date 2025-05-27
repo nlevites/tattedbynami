@@ -2,6 +2,7 @@
 import '@/styles/global.css';
 import type { Language } from '@/types';
 import ScrollProgress from '@/components/ScrollProgress';
+import CustomScrollbar from '@/components/CustomScrollbar';
 
 export interface Props {
   title?: string;
@@ -52,6 +53,7 @@ const createLangUrl = (path: string) => {
   </head>
   <body>
     <ScrollProgress client:load />
+    <CustomScrollbar client:load />
     <nav class="sticky top-0 z-50 bg-charcoal/95 backdrop-blur-sm border-b border-ink/10">
       <div class="container flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
         <a href={createLangUrl('/')} class="font-title text-lg sm:text-xl md:text-2xl text-accent-pink flex-shrink-0">NAMI</a>
